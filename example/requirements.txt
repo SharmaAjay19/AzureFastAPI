@@ -1,0 +1,1 @@
+azurefastapi@git+https://github.com/SharmaAjay19/AzureFastAPI
