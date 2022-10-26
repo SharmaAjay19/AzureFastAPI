@@ -1,9 +1,20 @@
-from azurefastapi.azurefastapi import AzureFastAPI
-from functions import factorial
-import os
+## HELPER FUNCTIONS
+import time
+def factorial(n, sleep=False):
+    if sleep:
+        time.sleep(4)
+    if n == 0:
+        return 1
+    else:
+        return n * factorial(n-1)
 
+import os
+## Import AzureFastAPI
+from azurefastapi.azurefastapi import AzureFastAPI
+## Initialize with config
 app = AzureFastAPI(os.path.join(os.path.dirname(__file__), "config.json"))
 
+## Add middleware for caching (can do other operations as well)
 @app.middleware("http")
 async def http_request_middleware(request, call_next):
     response = app.getFromCache(request.url.path)
@@ -14,7 +25,7 @@ async def http_request_middleware(request, call_next):
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Welcome to AzureFastAPI!"}
 
 @app.get("/hello")
 async def root():
@@ -28,7 +39,7 @@ async def nfactorial(n: int):
 async def userInfo(userAlias: str):
     return {"message": app.redis.get(userAlias)}
 
-# Run the fastapi app
+# Run the azurefastapi app
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host=app.appConfig.hostname, port=app.appConfig.port)
