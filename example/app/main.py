@@ -11,6 +11,7 @@ def factorial(n, sleep=False):
 import os
 ## Import AzureFastAPI
 from azurefastapi.azurefastapi import AzureFastAPI
+from fastapi.responses import HTMLResponse
 ## Initialize with config
 app = AzureFastAPI(os.path.join(os.path.dirname(__file__), "config.json"))
 
@@ -27,9 +28,9 @@ async def http_request_middleware(request, call_next):
     else:
         return await call_next(request)
 
-@app.get("/")
+@app.get("/", response_class=HTMLResponse)
 async def root():
-    return {"message": "Welcome to AzureFastAPI!"}
+    return "<center><h1>Welcome to AzureFastAPI</h1></center>"
 
 @app.get("/hello")
 async def root():
