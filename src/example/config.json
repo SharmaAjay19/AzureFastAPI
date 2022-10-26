@@ -1,0 +1,13 @@
+{
+    "hostname": "0.0.0.0",
+    "port": "5002",
+    "cacheEnabled": true,
+    "cacheType": "redis",
+    "cacheConfig": {
+        "hostname": "localhost",
+        "port": 3002,
+        "password": null,
+        "db": 0,
+        "ssl": false
+    }
+}
