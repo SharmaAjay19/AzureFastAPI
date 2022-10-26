@@ -14,14 +14,18 @@ from azurefastapi.azurefastapi import AzureFastAPI
 ## Initialize with config
 app = AzureFastAPI(os.path.join(os.path.dirname(__file__), "config.json"))
 
+cache_enabled_paths = ["/hello", "/nfactorial"]
 ## Add middleware for caching (can do other operations as well)
 @app.middleware("http")
 async def http_request_middleware(request, call_next):
-    response = app.getFromCache(request.url.path)
-    if not response:
-        response = await call_next(request)
-        response = await app.saveToCache(request.url.path, response)
-    return response
+    if [x for x in cache_enabled_paths if request.url.path.startswith(x)]:
+        response = app.getFromCache(request.url.path)
+        if not response:
+            response = await call_next(request)
+            response = await app.saveToCache(request.url.path, response)
+        return response
+    else:
+        return await call_next(request)
 
 @app.get("/")
 async def root():
