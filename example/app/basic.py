@@ -1,7 +1,3 @@
-## Usage
-
-### Basic
-```python
 from azurefastapi.azurefastapi import AzureFastAPI
 from fastapi.responses import HTMLResponse
 app = AzureFastAPI()
@@ -17,4 +13,3 @@ async def root():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host=app.appConfig.hostname, port=app.appConfig.port)
-```

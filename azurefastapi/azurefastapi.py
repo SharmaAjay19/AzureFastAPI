@@ -5,14 +5,20 @@ import os, redis, json
 
 class AzureFastAPI(FastAPI):
 
-    def __init__(self, configpath):
+    def __init__(self, configpath = None):
         super().__init__()
         try:
-            config_content = json.loads(open(configpath, "r").read())
+            if (configpath):
+                config_content = json.loads(open(configpath, "r").read())
+                self.appConfig = AppConfig.construct(**config_content)
+                self.appConfig.cacheConfig=RedisCacheConfig.construct(**config_content["cacheConfig"])
+            else:
+                raise Exception("configpath not provided")
         except FileNotFoundError as e:
-            config_content = os.environ
-        self.appConfig = AppConfig.construct(**config_content)
-        self.appConfig.cacheConfig=RedisCacheConfig.construct(**config_content["cacheConfig"])
+            self.appConfig = AppConfig()
+        except Exception as e:
+            print(str(e), "proceeding with default config")
+            self.appConfig = AppConfig()  
         if self.appConfig.cacheEnabled and self.appConfig.cacheType == CacheType.redis:
             self.redis = redis.Redis(host=self.appConfig.cacheConfig.hostname, port=self.appConfig.cacheConfig.port, db=self.appConfig.cacheConfig.db, password=self.appConfig.cacheConfig.password, ssl=self.appConfig.cacheConfig.ssl)
     

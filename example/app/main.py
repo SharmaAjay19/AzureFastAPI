@@ -18,7 +18,7 @@ cache_enabled_paths = ["/hello", "/nfactorial"]
 ## Add middleware for caching (can do other operations as well)
 @app.middleware("http")
 async def http_request_middleware(request, call_next):
-    if [x for x in cache_enabled_paths if request.url.path.startswith(x)]:
+    if app.appConfig.cacheEnabled and [x for x in cache_enabled_paths if request.url.path.startswith(x)]:
         response = app.getFromCache(request.url.path)
         if not response:
             response = await call_next(request)

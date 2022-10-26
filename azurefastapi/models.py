@@ -14,8 +14,8 @@ class RedisCacheConfig(BaseModel):
     ssl: bool
 
 class AppConfig(BaseModel):
-    hostname: str
-    port: int
+    hostname: str = "0.0.0.0"
+    port: int = 3002
     cacheEnabled: Optional[bool] = False
     cacheType: Optional[CacheType] = CacheType.redis
     cacheConfig: Optional[RedisCacheConfig] = None
