@@ -7,7 +7,7 @@ async def root():
     return "<center><h1>Welcome to AzureFastAPI</h1></center>"
 
 @app.get("/hello")
-async def root():
+async def hello():
     return {"message": "Hello World"}
 
 if __name__ == "__main__":
