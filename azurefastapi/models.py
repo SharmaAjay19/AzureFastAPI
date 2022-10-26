@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel
 from enum import Enum
 
@@ -17,6 +17,7 @@ class AppConfig(BaseModel):
     hostname: str = "0.0.0.0"
     port: int = 3002
     cacheEnabled: Optional[bool] = False
+    cacheEnabledPaths: List[str] = []
     cacheType: Optional[CacheType] = CacheType.redis
     cacheConfig: Optional[RedisCacheConfig] = None
     staticFolder: Optional[str] = None

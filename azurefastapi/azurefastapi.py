@@ -22,6 +22,16 @@ class AzureFastAPI(FastAPI):
         if self.appConfig.cacheEnabled and self.appConfig.cacheType == CacheType.redis:
             self.redis = redis.Redis(host=self.appConfig.cacheConfig.hostname, port=self.appConfig.cacheConfig.port, db=self.appConfig.cacheConfig.db, password=self.appConfig.cacheConfig.password, ssl=self.appConfig.cacheConfig.ssl)
     
+    async def useCaching(self, request, call_next):
+        if self.appConfig.cacheEnabled and [x for x in self.appConfig.cacheEnabledPaths if request.url.path.startswith(x)]:
+            response = self.getFromCache(request.url.path)
+            if not response:
+                response = await call_next(request)
+                response = await self.saveToCache(request.url.path, response)
+            return response
+        else:
+            return await call_next(request)
+    
     def enableRequestCaching(self):
         self.requestCachingEnabled = True
     
