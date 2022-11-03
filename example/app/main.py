@@ -9,13 +9,10 @@ def factorial(n, sleep=False):
         return n * factorial(n-1)
 
 import os
-## Import AzureFastAPI
 from azurefastapi.azurefastapi import AzureFastAPI
 from fastapi.responses import HTMLResponse
-## Initialize with config
-app = AzureFastAPI(os.path.join(os.path.dirname(__file__), "config.json"))
+app = AzureFastAPI(os.path.join(os.path.dirname(__file__), "defaultConfig.json"))
 
-## Add middleware for caching (can do other operations as well)
 @app.middleware("http")
 async def http_request_middleware(request, call_next):
     return await app.useCaching(request, call_next)
@@ -35,6 +32,12 @@ async def nfactorial(n: int):
 @app.get("/get/{userAlias}")
 async def userInfo(userAlias: str):
     return {"message": app.redis.get(userAlias)}
+
+@app.get("/getdb/{id}")
+async def getDb(id: str):
+    return await app.queryDb(
+        "AllMeshes",
+    f"SELECT * FROM mycontainer r WHERE r.name='{id}'")
 
 # Run the azurefastapi app
 if __name__ == "__main__":

@@ -1,6 +1,10 @@
+from optparse import Option
 from typing import Optional, List
 from pydantic import BaseModel
 from enum import Enum
+
+class DatabaseType(str, Enum):
+    cosmos = "cosmos"
 
 class CacheType(str, Enum):
     redis = "redis"
@@ -13,6 +17,15 @@ class RedisCacheConfig(BaseModel):
     db: int
     ssl: bool
 
+class CosmosDbConfig(BaseModel):
+    cosmosAccountUri: Optional[str] = None
+    cosmosAccountKey: Optional[str] = None
+    cosmosDatabase: Optional[str] = None
+
+class StaticContentConfig(BaseModel):
+    staticFolder: str
+    preLoad: Optional[bool] = False
+
 class AppConfig(BaseModel):
     hostname: str = "0.0.0.0"
     port: int = 3002
@@ -20,4 +33,7 @@ class AppConfig(BaseModel):
     cacheEnabledPaths: List[str] = []
     cacheType: Optional[CacheType] = CacheType.redis
     cacheConfig: Optional[RedisCacheConfig] = None
-    staticFolder: Optional[str] = None
+    dbEnabled: Optional[bool] = False
+    dbType: Optional[DatabaseType] = DatabaseType.cosmos
+    cosmosConfig: Optional[CosmosDbConfig] = None
+    staticContentConfig: Optional[StaticContentConfig] = None

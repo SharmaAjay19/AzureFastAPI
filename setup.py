@@ -11,7 +11,8 @@ setup(
     packages=['azurefastapi'],
     install_requires=['fastapi',
                       'uvicorn',
-                      'redis',                     
+                      'redis',
+                      'azure-cosmos',                     
                       ],
 
     classifiers=[
