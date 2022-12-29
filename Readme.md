@@ -6,4 +6,6 @@ AzureFastAPI is a python API framework that builds on top of FastAPI to deliver 
 pip install azurefastapi
 ```
 
-## [Usage](docs.md)
+### [Create a simple API in AzureFastAPI](docs.md)
+
+### [Run locally and deployt to Azure Container Apps](Instructions.md)
