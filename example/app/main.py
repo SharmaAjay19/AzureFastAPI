@@ -11,7 +11,7 @@ def factorial(n, sleep=False):
 import os
 from azurefastapi.azurefastapi import AzureFastAPI
 from fastapi.responses import HTMLResponse
-app = AzureFastAPI(os.path.join(os.path.dirname(__file__), "defaultConfig.json"))
+app = AzureFastAPI(os.path.join(os.path.dirname(__file__), "config.json"))
 
 @app.middleware("http")
 async def http_request_middleware(request, call_next):

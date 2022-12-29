@@ -22,20 +22,6 @@ if __name__ == "__main__":
 
 ### Connect to Redis cache and use in Middleware
 ```python
-## HELPER FUNCTIONS
-import time
-def factorial(n, sleep=False):
-    if sleep:
-        time.sleep(4)
-    if n == 0:
-        return 1
-    else:
-        return n * factorial(n-1)
-
-import os
-## Import AzureFastAPI
-from azurefastapi.azurefastapi import AzureFastAPI
-from fastapi.responses import HTMLResponse
 ## Initialize with config
 app = AzureFastAPI(os.path.join(os.path.dirname(__file__), "config.json"))
 
@@ -43,14 +29,6 @@ app = AzureFastAPI(os.path.join(os.path.dirname(__file__), "config.json"))
 @app.middleware("http")
 async def http_request_middleware(request, call_next):
     return await app.useCaching(request, call_next)
-
-@app.get("/", response_class=HTMLResponse)
-async def root():
-    return "<center><h1>Welcome to AzureFastAPI</h1></center>"
-
-@app.get("/hello")
-async def hello():
-    return {"message": "Hello World"}
 
 @app.get("/nfactorial/{n}")
 async def nfactorial(n: int):
@@ -60,17 +38,12 @@ async def nfactorial(n: int):
 async def userInfo(userAlias: str):
     return {"message": app.redis.get(userAlias)}
 
-# Run the azurefastapi app
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host=app.appConfig.hostname, port=app.appConfig.port)
 ```
 
 The config file looks like:
 ```json
 {
-    "hostname": "0.0.0.0",
-    "port": "5002",
+    ...
     "cacheEnabled": true,
     "cacheEnabledPaths": ["/nfactorial"],
     "cacheType": "redis",
@@ -81,5 +54,6 @@ The config file looks like:
         "db": 0,
         "ssl": false
     }
+    ...
 }
 ```

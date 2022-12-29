@@ -19,6 +19,6 @@
         "cosmosDatabase": "COSMOS__DB"
     },
     "staticContentConfig": {
-        "staticFolder": "static"
+        "staticFolder": ""
     }
 }

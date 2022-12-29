@@ -8,7 +8,7 @@ from azure.cosmos import CosmosClient
 class AzureFastAPI(FastAPI):
 
     def __init__(self, configpath = None):
-        super().__init__()
+        super().__init__(title = "AzureFastAPI")
         try:
             if (configpath):
                 config_content = json.loads(open(configpath, "r").read())
