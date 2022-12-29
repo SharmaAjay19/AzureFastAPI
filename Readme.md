@@ -8,4 +8,4 @@ pip install azurefastapi
 
 ### [Create a simple API in AzureFastAPI](docs.md)
 
-### [Run locally and deployt to Azure Container Apps](Instructions.md)
+### [Run locally and deploy it to Azure Container Apps](Instructions.md)
